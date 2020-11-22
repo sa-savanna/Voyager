@@ -1,46 +1,61 @@
 import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
+import Spinner from "../Spinner/Spinner"
+import { FaLocationArrow } from 'react-icons/fa';
+
+
 let APIurl =
-  "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch";
-let key = process.env.REACT_APP_GOOGLE_KEY;
+    "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch";
+const key = process.env.REACT_APP_GOOGLE_KEY;
+
 
 
 const Map = ({ city, setPlaceId, center, setCenter }) => {
-  const [zoom, setZoom] = useState(2);
-  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (city) {
-      setLoading(true);
-      fetch(`${APIurl}/json?query=${city}&language=en&key=${key}`)
-        .then((res) => res.json())
-        .then((data) => {
-          data && data.results[0] &&
-          setCenter(data.results[0].geometry.location);
-          console.log(data)
-          setZoom(12);
-          data.results[0] && setPlaceId(data.results[0].place_id);
-          setLoading(false)
-        });
-    }
-  }, [city]);
+        const [loading, setLoading] = useState(true)
 
-  return (
-    <div className="map">
-   { loading? 
-   <div style={{padding:"100px 0", textAlign:"center"}}><iframe src="https://giphy.com/embed/3oEjI6SIIHBdRxXI40" width="180" height="180" frameBorder="0" className="giphy-embed"  ></iframe></div>
-   :
-      <GoogleMapReact
-        bootstrapURLKeys={{ key }}
-        center={center}
-        defaultZoom={2}
-        zoom={zoom}
-        heignt="400"
-        width="600"
-      ></GoogleMapReact>
-   }
-    </div>
-  );
+    useEffect(() => {
+        if (city) {
+            setLoading(true);
+            fetch(`${APIurl}/json?query=${city}&language=en&key=${key}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    data && data.results[0] &&
+                        setCenter(data.results[0].geometry.location);
+                    // console.log(data)
+
+                    data.results[0] && setPlaceId(data.results[0].place_id);
+
+                });
+            setLoading(false)
+        }
+    }, [city, setCenter, setPlaceId]);
+
+    const LocationPin = () => (
+        <div className="pin">
+            <FaLocationArrow />
+        </div>
+    )
+
+    return loading ? <Spinner /> : (
+        <div className="map">
+            <GoogleMapReact
+                bootstrapURLKeys={{ key }}
+                center={center}
+                zoom={10}
+                defaultCenter={{
+                    lat: 50.85045,
+                    lng: 4.34878
+                }}
+            >
+                {
+                    loading ? <Spinner /> :
+                        <LocationPin lat={center.lat} lng={center.lng} />
+                }
+            </GoogleMapReact>
+
+        </div>
+    );
 };
 
 export default Map;

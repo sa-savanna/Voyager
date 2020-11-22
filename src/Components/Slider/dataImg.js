@@ -4,6 +4,7 @@ import Brazil from "./img/Brazil.jpg"
 import Ukraine from "./img/ukraine-kyiv_1920.jpg"
 import France from "./img/France.jpg"
 import Japan from './img/Japan_1920.jpg'
+import India from './img/india_1920.jpg'
 
 export const slides = [
     {
@@ -30,6 +31,11 @@ export const slides = [
         id: '5',
         title: 'Japan',
         img: Japan,
+    },
+    {
+        id: '6',
+        title: 'India',
+        img: India,
     }
 
 
