@@ -19,7 +19,7 @@ const Topbar = ({ data }) => {
         </li>
         <li>
           <p>{(data.population / 1000000).toFixed(1)}</p>
-          <small className="text-muted">Population, ppl</small>
+          <small className="text-muted">Population, mln</small>
         </li>
         <li>
           <p>
